@@ -4,11 +4,31 @@ const vystup = document.getElementById('vysledek');
 let number;
 let i = 0;
 let control = 0;
-let count = vstup.value;
 let losy = [];
 
+btn.addEventListener("click", function () {
+    let count = vstup.value;
+    for (i; i < count; i++) {
+        number = randomNum();
+        losy.forEach(function (value) {
+            if (control == 0 && value == number) {
+                control = 1;
+            }
+        });
+        if (control == 1) {
+            count++;
+            control = 0;
+        } else {
+            losy.push(number);
+            control = 0;
+        }
+    }
+    write();
+    clean();
+});
+
 function randomNum(min = 1, max = 49){
-    return (Math.floor(Math.random() * (max - min) + min));
+    return (Math.round(Math.random() * (max - min) + min));
 }
 
 function clean(){
@@ -16,29 +36,13 @@ function clean(){
     i = 0;
     vstup.value = '';
 }
-
-function addNum(num){
-    losy.forEach(function (value){
-        if(num == value){
-            control++;
-        }
+function write() {
+    vystup.innerHTML = `Výsledek: `;
+    losy.forEach(function (value, index) {
+                if (index < (losy.length - 1)) {
+                    vystup.innerHTML += `${value}, `;
+                } else {
+                    vystup.innerHTML += `${value}`;
+                }
     })
-    if(control > 0){
-        count++; 
-    }else{
-        losy.push(num);
-        control = 0;
-    }
 }
-
-btn.addEventListener("click", function(){
-    vystup.innerHTML = ``;
-    for(i; i < count; i++){
-        number = randomNum();
-        addNum(number);
-        vystup.innerHTML += `${losy[i]},`
-    }
-    console.log(losy);
-    clean()
-})
-
